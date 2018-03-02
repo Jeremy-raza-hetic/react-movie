@@ -1,0 +1,9 @@
+.home {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: #2A3140;
+  &__link {
+    text-decoration: none;
+  }
+}

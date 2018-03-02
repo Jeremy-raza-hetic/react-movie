@@ -1,0 +1,17 @@
+@import '../../assets/scss/_breakpoints';
+
+.card {
+  margin: 15px;
+  height: 200px;
+  &:hover {
+    cursor: pointer;
+  }
+  @include bp('tablet') {
+    height: 440px;
+    margin: 20px;
+  }
+  &__img {
+    max-width: 100%;
+    max-height: 100%;
+  }
+}
