@@ -1,0 +1,14 @@
+.panel {
+  padding: 0 15px;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: 50px;
+  }
+  &__img {
+    height: 300px;
+    width: 250px;
+  }
+
+}
