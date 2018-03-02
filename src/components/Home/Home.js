@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import {searchMovies} from "../../api/omdb";
+import {CSSTransition, TransitionGroup} from 'react-transition-group';
 
 import './Home.scss';
 import Card from './../Card/Card';
@@ -18,13 +19,25 @@ const styles = {
 	}
 };
 
+const Fade = ({children, ...props}) => {
+	return (
+		<CSSTransition
+			{...props}
+			timeout={1000}
+			classNames="fade"
+		>
+			{children}
+		</CSSTransition>
+	)
+};
+
 class Home extends Component {
 	constructor() {
 		super();
 		this.state = {
 			movies: [],
 			filterValue: 1,
-			windowWidth: 0,
+			scroll: 0,
 		}
 	}
 
@@ -54,14 +67,8 @@ class Home extends Component {
 		});
 	};
 
-	watchScroll() {
-		this.setState({
-			windowWidth: window.innerWidth
-		})
-	}
 
 	// Hooks
-
 	async componentDidMount() {
 		const movies = await searchMovies({
 			terms: "x-men",
@@ -71,15 +78,12 @@ class Home extends Component {
 		this.setState({
 			movies,
 		});
-		window.addEventListener('resize', this.watchScroll());
 	}
-
 
 	render() {
 		return (
 			<div
-				className="home"
-				ref={el => this.element = el}>
+				className="home">
 				<DropDownMenu
 					value={this.state.filterValue}
 					style={styles.customWidth}
@@ -89,13 +93,15 @@ class Home extends Component {
 					<MenuItem value={1} primaryText="No filtered" onClick={() => this.resetFilter()}/>
 					<MenuItem value={2} primaryText="Most recent" onClick={() => this.mostRecentMovies()}/>
 				</DropDownMenu>
-				<div className="home__container">
-					{this.state.movies.map((movie, i) =>
-						<Link to={`movie/${i}`} key={movie.imdb} className="home__link">
-							<Card movie={movie} key={movie.imdb}/>
-						</Link>
-					)}
-				</div>
+					<TransitionGroup className="home__container">
+						{this.state.movies.map((movie, i) =>
+							<Fade key={movie.imdb} style={{'transitionDelay': `${ i * 0.100}s`}}>
+								<Link to={`movie/${i}`} key={movie.imdb} className="home__link">
+									<Card movie={movie} key={movie.imdb}/>
+								</Link>
+							</Fade>
+						)}
+					</TransitionGroup>
 			</div>
 		)
 	}
