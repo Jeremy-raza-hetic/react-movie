@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Link} from 'react-router-dom';
 import Card from './../Card/Card';
-import {getMovie, searchMovies} from "../../api/omdb";
+import {searchMovies} from "../../api/omdb";
 
 import './Home.scss';
 
